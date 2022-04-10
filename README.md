@@ -1,2 +1,4 @@
-# spy
-vezdecode spy game
+# Намастэ
+## Команда вездекода
+
+### Задание: VK Mini App - Spy game
