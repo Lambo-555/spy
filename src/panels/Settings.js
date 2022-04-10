@@ -7,11 +7,11 @@ const SettingsPanel = (props) => (
     <PanelHeader
       left={
         <PanelHeaderBack
-          onClick={() => props.goTo(props.panelSchema.menuPanel)}
+          onClick={() => props.goTo(props.panels.gamePanel)}
         />
       }
     >
-      Wallet
+      Settings
     </PanelHeader>
     <h1>Settings</h1>
   </Panel>

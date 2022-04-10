@@ -1,64 +1,40 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import Web3 from "web3";
-import {
-  useAppearance,
-  AppRoot,
-  View,
-} from "@vkontakte/vkui";
+import store from "./store";
+import { Provider } from "react-redux";
+import { AppRoot, View } from "@vkontakte/vkui";
 import "@vkontakte/vkui/dist/vkui.css";
-import MenuPanel from "./panels/Menu";
-import WalletPanel from "./panels/Wallet";
-import HistoryPanel from "./panels/History";
-import SettingsPanel from "./panels/Settings";
+import GamePanel from "./panels/Game";
+import PlayersPanel from "./panels/Players";
+import LocationsPanel from "./panels/Locations";
 
-const web3 = new Web3(
-  "https://rinkeby.infura.io/v3/3c32cdd37b124fed85037dd52f7a70c5"
-);
-const panelSchema = {
-  menuPanel: "menuPanel",
-  walletPanel: "walletPanel",
-  historyPanel: "historyPanel",
-  settingsPanel: "settingsPanel",
+const panels = {
+  gamePanel: "gamePanel",
+  locationsPanel: "locationsPanel",
+  playersPanel: "playersPanel",
+  // settingsPanel: "settingsPanel",
 };
 
 const App = () => {
-  const [activePanel, setActivePanel] = React.useState(panelSchema.menuPanel);
-  const [address, setAddress] = React.useState(
-    "0xA0c7fD770A3961128B115Cca24C2f08ACE7438D8"
-  );
+  const [activePanel, setActivePanel] = useState(panels.gamePanel);
 
-  const goTo = (panelName = panelSchema.menuPanel) => {
+  const goTo = (panelName = panels.gamePanel) => {
     setActivePanel(panelName);
   };
-
   return (
-    <AppRoot>
-      <View activePanel={activePanel}>
-        <MenuPanel
-          id={panelSchema.menuPanel}
-          goTo={goTo}
-          panelSchema={panelSchema}
-        />
-        <WalletPanel
-          id={panelSchema.walletPanel}
-          goTo={goTo}
-          panelSchema={panelSchema}
-          blockchain={{ web3, address, setAddress }}
-        />
-        <SettingsPanel
-          id={panelSchema.settingsPanel}
-          goTo={goTo}
-          panelSchema={panelSchema}
-        />
-        <HistoryPanel
-          id={panelSchema.historyPanel}
-          goTo={goTo}
-          panelSchema={panelSchema}
-          blockchain={{ web3, address, setAddress }}
-        />
-      </View>
-    </AppRoot>
+    <Provider store={store}>
+      <AppRoot>
+        <View activePanel={activePanel}>
+          <GamePanel id={panels.gamePanel} goTo={goTo} panels={panels} />
+          <LocationsPanel
+            id={panels.locationsPanel}
+            goTo={goTo}
+            panels={panels}
+          />
+          <PlayersPanel id={panels.playersPanel} goTo={goTo} panels={panels} />
+        </View>
+      </AppRoot>
+    </Provider>
   );
 };
 
